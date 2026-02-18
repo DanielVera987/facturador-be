@@ -10,15 +10,17 @@ import type {
   Moneda,
   TipoDeComprobante,
 } from '../enums/CatalogosEnum';
-import NoCertificadoValueObject from '../valueObjects/NoCertificadoValueObject';
-import CodigoPostalValueObject from '../valueObjects/CodigoPostalValueObject';
-import CondicionesDePagoValueObject from '../valueObjects/CondicionesDePagoValueObject';
-import ImporteValueObject from '../valueObjects/ImporteValueObject';
-import TipoCambioValueObject from '../valueObjects/TipoCambioValueObject';
-import EmisorValueObject from '../valueObjects/EmisorValueObject';
-import ReceptorValueObject from '../valueObjects/ReceptorValueObject';
+import NoCertificadoValueObject from '../valueObjects/comprobante/NoCertificadoValueObject';
+import CondicionesDePagoValueObject from '../valueObjects/comprobante/CondicionesDePagoValueObject';
+import TipoCambioValueObject from '../valueObjects/comprobante/TipoCambioValueObject';
+import EmisorValueObject from '../valueObjects/comprobante/EmisorValueObject';
+import ReceptorValueObject from '../valueObjects/comprobante/ReceptorValueObject';
+import CodigoPostalValueObject from '../valueObjects/shared/CodigoPostalValueObject';
+import ImporteValueObject from '../valueObjects/shared/ImporteValueObject';
+import ConceptoValueObject from '../valueObjects/concepto/ConceptoValueObject';
 import { IEmisor } from '../interfaces/Emisor';
 import { IReceptor } from '../interfaces/Receptor';
+import type { IConcepto } from '../interfaces/Concepto';
 
 export default class Comprobante extends AggregateRoot {
   private readonly version: string = '4.0';
@@ -59,9 +61,11 @@ export default class Comprobante extends AggregateRoot {
 
   private confirmacion?: StringValueObject;
 
-  private emisor: EmisorValueObject;
+  private emisor: EmisorValueObject | undefined = undefined;
 
-  private receptor: ReceptorValueObject;
+  private receptor: ReceptorValueObject | undefined = undefined;
+
+  private conceptos: ConceptoValueObject[] = [];
 
   constructor(attributes: IComprobante) {
     super();
@@ -75,35 +79,19 @@ export default class Comprobante extends AggregateRoot {
       this.folio = new LengthValueObject(attributes.folio, 40);
     }
 
-    // Atributos requeridos
-    this.fecha = new DateValueObject(attributes.fecha);
-    this.sello = new StringValueObject(attributes.sello);
-    this.noCertificado = new NoCertificadoValueObject(attributes.noCertificado);
-    this.certificado = new StringValueObject(attributes.certificado);
-
-    // Atributo opcional
     if (attributes.condicionesDePago !== undefined) {
       this.condicionesDePago = new CondicionesDePagoValueObject(
         attributes.condicionesDePago,
       );
     }
 
-    this.subtotal = new ImporteValueObject(attributes.subtotal);
-
     if (attributes.descuento !== undefined) {
       this.descuento = new ImporteValueObject(attributes.descuento);
     }
 
-    this.moneda = attributes.moneda;
-
     if (attributes.tipoCambio !== undefined) {
       this.tipoCambio = new TipoCambioValueObject(attributes.tipoCambio);
     }
-
-    this.total = new ImporteValueObject(attributes.total);
-
-    this.tipoDeComprobante = attributes.tipoDeComprobante;
-    this.exportacion = attributes.exportacion;
 
     if (attributes.metodoPago !== undefined) {
       this.metodoPago = attributes.metodoPago;
@@ -113,13 +101,23 @@ export default class Comprobante extends AggregateRoot {
       this.formaPago = attributes.formaPago;
     }
 
-    this.lugarExpedicion = new CodigoPostalValueObject(
-      attributes.lugarExpedicion,
-    );
-
     if (attributes.confirmacion !== undefined) {
       this.confirmacion = new StringValueObject(attributes.confirmacion);
     }
+
+    // Atributos requeridos
+    this.fecha = new DateValueObject(attributes.fecha);
+    this.sello = new StringValueObject(attributes.sello);
+    this.noCertificado = new NoCertificadoValueObject(attributes.noCertificado);
+    this.certificado = new StringValueObject(attributes.certificado);
+    this.subtotal = new ImporteValueObject(attributes.subtotal);
+    this.moneda = attributes.moneda;
+    this.total = new ImporteValueObject(attributes.total);
+    this.tipoDeComprobante = attributes.tipoDeComprobante;
+    this.exportacion = attributes.exportacion;
+    this.lugarExpedicion = new CodigoPostalValueObject(
+      attributes.lugarExpedicion,
+    );
   }
 
   public static create(attributes: IComprobante): Comprobante {
@@ -132,6 +130,16 @@ export default class Comprobante extends AggregateRoot {
 
   public addReceptor(receptor: IReceptor): void {
     this.receptor = new ReceptorValueObject(receptor);
+  }
+
+  public addConcepto(concepto: IConcepto): ConceptoValueObject {
+    const newConcepto = new ConceptoValueObject(concepto);
+    this.conceptos.push(newConcepto);
+    return newConcepto;
+  }
+
+  public addConceptos(conceptos: IConcepto[]): void {
+    conceptos.forEach((concepto) => this.addConcepto(concepto));
   }
 
   public toPrimitives() {
@@ -147,9 +155,7 @@ export default class Comprobante extends AggregateRoot {
         condicionesDePago: this.condicionesDePago.value,
       }),
       subtotal: this.subtotal.value,
-      ...(this.descuento !== undefined && {
-        descuento: this.descuento.value,
-      }),
+      descuento: this.descuento === undefined ? 0 : this.descuento,
       moneda: this.moneda,
       ...(this.tipoCambio !== undefined && {
         tipoCambio: this.tipoCambio.value,
@@ -167,8 +173,9 @@ export default class Comprobante extends AggregateRoot {
       ...(this.confirmacion !== undefined && {
         confirmacion: this.confirmacion.value,
       }),
-      emisor: this.emisor.toPrimitives(),
-      receptor: this.receptor.toPrimitives(),
+      emisor: this.emisor ? this.emisor.toPrimitives() : undefined,
+      receptor: this.receptor ? this.receptor.toPrimitives() : undefined,
+      conceptos: this.conceptos.map((c) => c.toPrimitives()),
     };
   }
 }

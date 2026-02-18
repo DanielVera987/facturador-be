@@ -1,5 +1,11 @@
-import { ValueObject } from '../../../shared/domain/valueObjects/ValueObject';
+import { ValueObject } from '../../../../shared/domain/valueObjects/ValueObject';
 
+/**
+ * Value Object para TipoCambio del CFDI
+ * Según el Anexo 20 v4.0 del SAT:
+ * - Condicional: requerido cuando Moneda es diferente de MXN o XXX
+ * - Debe ser mayor a 0
+ */
 export default class TipoCambioValueObject extends ValueObject<number> {
   constructor(value: number) {
     super(value);

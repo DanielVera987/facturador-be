@@ -5,6 +5,7 @@ import type {
   Moneda,
   TipoDeComprobante,
 } from '../enums/CatalogosEnum';
+import type { IConcepto } from './Concepto';
 import type { IEmisor } from './Emisor';
 import type { IReceptor } from './Receptor';
 
@@ -133,4 +134,10 @@ export default interface IComprobante {
   emisor?: IEmisor | null;
 
   receptor?: IReceptor | null;
+
+  /**
+   * Requerido. Lista de conceptos cubiertos por el comprobante.
+   * Debe contener al menos un concepto.
+   */
+  conceptos?: IConcepto[];
 }

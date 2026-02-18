@@ -1,5 +1,10 @@
-import { ValueObject } from '../../../shared/domain/valueObjects/ValueObject';
+import { ValueObject } from '../../../../shared/domain/valueObjects/ValueObject';
 
+/**
+ * Value Object para Código Postal (usado en LugarExpedicion y DomicilioFiscalReceptor)
+ * Según el Anexo 20 v4.0 del SAT:
+ * - Patrón: [0-9]{5} (cadena de exactamente 5 dígitos)
+ */
 export default class CodigoPostalValueObject extends ValueObject<string> {
   private static readonly PATTERN = /^[0-9]{5}$/;
 

@@ -9,7 +9,7 @@ export abstract class ValueObject<T extends Primitive> {
   }
 
   private ensureValueIsDefinied(value: T) {
-    if (!value || value == undefined || value == null) {
+    if (value === undefined || value === null) {
       throw Error('Value must be definied');
     }
   }

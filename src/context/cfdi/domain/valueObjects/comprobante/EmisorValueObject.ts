@@ -1,8 +1,12 @@
-import { RegimenFiscal } from '../enums/CatalogosEnum';
-import type { IEmisor } from '../interfaces/Emisor';
-import NombreValueObject from './NombreValueObject';
-import RfcValueObject from './RfcValueObject';
+import { RegimenFiscal } from '../../enums/CatalogosEnum';
+import type { IEmisor } from '../../interfaces/Emisor';
+import NombreValueObject from '../shared/NombreValueObject';
+import RfcValueObject from '../shared/RfcValueObject';
 
+/**
+ * Value Object compuesto para el nodo Emisor del CFDI
+ * Según el Anexo 20 v4.0 del SAT
+ */
 export default class EmisorValueObject {
   public readonly rfc: RfcValueObject;
   public readonly nombre: NombreValueObject;

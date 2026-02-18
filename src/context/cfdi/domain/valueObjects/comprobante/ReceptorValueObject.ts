@@ -1,9 +1,13 @@
-import { RegimenFiscal, UsoCFDI } from '../enums/CatalogosEnum';
-import type { IReceptor } from '../interfaces/Receptor';
-import CodigoPostalValueObject from './CodigoPostalValueObject';
-import NombreValueObject from './NombreValueObject';
-import RfcValueObject from './RfcValueObject';
+import { RegimenFiscal, UsoCFDI } from '../../enums/CatalogosEnum';
+import type { IReceptor } from '../../interfaces/Receptor';
+import CodigoPostalValueObject from '../shared/CodigoPostalValueObject';
+import NombreValueObject from '../shared/NombreValueObject';
+import RfcValueObject from '../shared/RfcValueObject';
 
+/**
+ * Value Object compuesto para el nodo Receptor del CFDI
+ * Según el Anexo 20 v4.0 del SAT
+ */
 export default class ReceptorValueObject {
   public readonly rfc: RfcValueObject;
   public readonly nombre: NombreValueObject;

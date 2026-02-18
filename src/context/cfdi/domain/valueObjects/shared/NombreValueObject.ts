@@ -1,5 +1,11 @@
-import { ValueObject } from '../../../shared/domain/valueObjects/ValueObject';
+import { ValueObject } from '../../../../shared/domain/valueObjects/ValueObject';
 
+/**
+ * Anexo 20 v4.0 del SAT:
+ * - Requerido
+ * - Longitud máxima: 254 caracteres
+ * - Patrón: [^|]{1,254}
+ */
 export default class NombreValueObject extends ValueObject<string> {
   private static readonly MAX_LENGTH = 254;
   private static readonly PATTERN = /^[^|]{1,254}$/;

@@ -1,5 +1,12 @@
-import { ValueObject } from '../../../shared/domain/valueObjects/ValueObject';
+import { ValueObject } from '../../../../shared/domain/valueObjects/ValueObject';
 
+/**
+ * Value Object para CondicionesDePago del CFDI
+ * Según el Anexo 20 v4.0 del SAT:
+ * - Opcional
+ * - Longitud máxima: 1000 caracteres
+ * - Patrón: [^|]{1,1000}
+ */
 export default class CondicionesDePagoValueObject extends ValueObject<string> {
   private static readonly MAX_LENGTH = 1000;
   private static readonly PATTERN = /^[^|]{1,1000}$/;

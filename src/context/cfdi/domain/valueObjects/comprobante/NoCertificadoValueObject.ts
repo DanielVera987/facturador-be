@@ -1,5 +1,11 @@
-import { ValueObject } from '../../../shared/domain/valueObjects/ValueObject';
+import { ValueObject } from '../../../../shared/domain/valueObjects/ValueObject';
 
+/**
+ * Value Object para el Número de Certificado del CFDI
+ * Según el Anexo 20 v4.0 del SAT:
+ * - Requerido
+ * - Patrón: [0-9]{20} (cadena de exactamente 20 dígitos)
+ */
 export default class NoCertificadoValueObject extends ValueObject<string> {
   private static readonly PATTERN = /^[0-9]{20}$/;
 
