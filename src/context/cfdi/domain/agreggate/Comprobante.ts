@@ -21,6 +21,8 @@ import ConceptoValueObject from '../valueObjects/concepto/ConceptoValueObject';
 import { IEmisor } from '../interfaces/Emisor';
 import { IReceptor } from '../interfaces/Receptor';
 import type { IConcepto } from '../interfaces/Concepto';
+import InformacionGlobalValueObject from '../valueObjects/comprobante/InformacionGlobalValueObject';
+import { InformacionGlobal } from '../interfaces/InformacionGlobal';
 
 export default class Comprobante extends AggregateRoot {
   private readonly version: string = '4.0';
@@ -60,6 +62,8 @@ export default class Comprobante extends AggregateRoot {
   private lugarExpedicion: CodigoPostalValueObject;
 
   private confirmacion?: StringValueObject;
+
+  private informacionGlobal?: InformacionGlobalValueObject;
 
   private emisor?: EmisorValueObject;
 
@@ -131,10 +135,20 @@ export default class Comprobante extends AggregateRoot {
     if (attributes.conceptos !== undefined) {
       this.addConceptos(attributes.conceptos);
     }
+
+    if (attributes.informacionGlobal !== undefined) {
+      this.addInformacionGlobal(attributes.informacionGlobal);
+    }
   }
 
   public static create(attributes: IComprobante): Comprobante {
     return new Comprobante(attributes);
+  }
+
+  public addInformacionGlobal(informacionGlobal: InformacionGlobal) {
+    this.informacionGlobal = new InformacionGlobalValueObject(
+      informacionGlobal,
+    );
   }
 
   public addEmisor(emisor: IEmisor): void {
@@ -187,6 +201,9 @@ export default class Comprobante extends AggregateRoot {
       lugarExpedicion: this.lugarExpedicion.value,
       ...(this.confirmacion !== undefined && {
         confirmacion: this.confirmacion.value,
+      }),
+      ...(this.informacionGlobal !== undefined && {
+        informacionGlobal: this.informacionGlobal.toPrimitives(),
       }),
       ...(this.emisor !== undefined && {
         emisor: this.emisor.toPrimitives(),

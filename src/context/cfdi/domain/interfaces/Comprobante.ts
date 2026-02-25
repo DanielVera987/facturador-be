@@ -7,6 +7,7 @@ import type {
 } from '../enums/CatalogosEnum';
 import type { IConcepto } from './Concepto';
 import type { IEmisor } from './Emisor';
+import { InformacionGlobal } from './InformacionGlobal';
 import type { IReceptor } from './Receptor';
 
 /**
@@ -130,6 +131,12 @@ export default interface IComprobante {
    * por el SAT para registrar comprobantes con importes fuera del rango establecido.
    */
   confirmacion?: string;
+
+  /**
+   * Condicional. Campo requerido para registrar el período al que corresponde
+   * la información del comprobante global.
+   */
+  informacionGlobal?: InformacionGlobal;
 
   emisor?: IEmisor | null;
 
