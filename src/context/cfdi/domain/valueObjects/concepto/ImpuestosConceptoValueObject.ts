@@ -11,8 +11,8 @@ import { IRetencionConcepto } from '../../interfaces/RetencionConcepto';
  * Contiene los arrays de traslados y retenciones aplicables al concepto.
  */
 export default class ImpuestosConceptoValueObject {
-  public readonly traslados: TrasladoConceptoValueObject[];
-  public readonly retenciones: RetencionConceptoValueObject[];
+  private readonly traslados: TrasladoConceptoValueObject[];
+  private readonly retenciones: RetencionConceptoValueObject[];
 
   constructor(attributes: IImpuestosConcepto) {
     this.traslados = (attributes.traslados ?? []).map(

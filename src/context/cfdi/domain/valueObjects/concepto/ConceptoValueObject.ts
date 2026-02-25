@@ -21,7 +21,7 @@ export default class ConceptoValueObject {
   public readonly importe: ImporteValueObject;
   public readonly descuento?: ImporteValueObject;
   public readonly objetoImp: ObjetoImpuesto;
-  public impuestos?: ImpuestosConceptoValueObject;
+  private impuestos?: ImpuestosConceptoValueObject;
 
   constructor(attributes: IConcepto) {
     this.claveProdServ = new ClaveProdServValueObject(attributes.claveProdServ);

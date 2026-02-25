@@ -61,14 +61,28 @@ export default class Comprobante extends AggregateRoot {
 
   private confirmacion?: StringValueObject;
 
-  private emisor: EmisorValueObject | undefined = undefined;
+  private emisor?: EmisorValueObject;
 
-  private receptor: ReceptorValueObject | undefined = undefined;
+  private receptor?: ReceptorValueObject;
 
   private conceptos: ConceptoValueObject[] = [];
 
   constructor(attributes: IComprobante) {
     super();
+
+    // Atributos requeridos
+    this.fecha = new DateValueObject(attributes.fecha);
+    this.sello = new StringValueObject(attributes.sello);
+    this.noCertificado = new NoCertificadoValueObject(attributes.noCertificado);
+    this.certificado = new StringValueObject(attributes.certificado);
+    this.subtotal = new ImporteValueObject(attributes.subtotal);
+    this.moneda = attributes.moneda;
+    this.total = new ImporteValueObject(attributes.total);
+    this.tipoDeComprobante = attributes.tipoDeComprobante;
+    this.exportacion = attributes.exportacion;
+    this.lugarExpedicion = new CodigoPostalValueObject(
+      attributes.lugarExpedicion,
+    );
 
     // Atributos opcionales
     if (attributes.serie !== undefined) {
@@ -105,19 +119,18 @@ export default class Comprobante extends AggregateRoot {
       this.confirmacion = new StringValueObject(attributes.confirmacion);
     }
 
-    // Atributos requeridos
-    this.fecha = new DateValueObject(attributes.fecha);
-    this.sello = new StringValueObject(attributes.sello);
-    this.noCertificado = new NoCertificadoValueObject(attributes.noCertificado);
-    this.certificado = new StringValueObject(attributes.certificado);
-    this.subtotal = new ImporteValueObject(attributes.subtotal);
-    this.moneda = attributes.moneda;
-    this.total = new ImporteValueObject(attributes.total);
-    this.tipoDeComprobante = attributes.tipoDeComprobante;
-    this.exportacion = attributes.exportacion;
-    this.lugarExpedicion = new CodigoPostalValueObject(
-      attributes.lugarExpedicion,
-    );
+    // Nodos hijos
+    if (attributes.emisor !== undefined && attributes.emisor !== null) {
+      this.addEmisor(attributes.emisor);
+    }
+
+    if (attributes.receptor !== undefined && attributes.receptor !== null) {
+      this.addReceptor(attributes.receptor);
+    }
+
+    if (attributes.conceptos !== undefined) {
+      this.addConceptos(attributes.conceptos);
+    }
   }
 
   public static create(attributes: IComprobante): Comprobante {
@@ -155,7 +168,9 @@ export default class Comprobante extends AggregateRoot {
         condicionesDePago: this.condicionesDePago.value,
       }),
       subtotal: this.subtotal.value,
-      descuento: this.descuento === undefined ? 0 : this.descuento,
+      ...(this.descuento !== undefined && {
+        descuento: this.descuento.value,
+      }),
       moneda: this.moneda,
       ...(this.tipoCambio !== undefined && {
         tipoCambio: this.tipoCambio.value,
@@ -173,8 +188,12 @@ export default class Comprobante extends AggregateRoot {
       ...(this.confirmacion !== undefined && {
         confirmacion: this.confirmacion.value,
       }),
-      emisor: this.emisor ? this.emisor.toPrimitives() : undefined,
-      receptor: this.receptor ? this.receptor.toPrimitives() : undefined,
+      ...(this.emisor !== undefined && {
+        emisor: this.emisor.toPrimitives(),
+      }),
+      ...(this.receptor !== undefined && {
+        receptor: this.receptor.toPrimitives(),
+      }),
       conceptos: this.conceptos.map((c) => c.toPrimitives()),
     };
   }
