@@ -35,6 +35,8 @@ export default class Comprobante extends AggregateRoot {
 
   private sello: StringValueObject;
 
+  private formaPago?: FormaPago;
+
   private noCertificado: NoCertificadoValueObject;
 
   private certificado: StringValueObject;
@@ -57,13 +59,13 @@ export default class Comprobante extends AggregateRoot {
 
   private metodoPago?: MetodoPago;
 
-  private formaPago?: FormaPago;
-
   private lugarExpedicion: CodigoPostalValueObject;
 
   private confirmacion?: StringValueObject;
 
   private informacionGlobal?: InformacionGlobalValueObject;
+
+  // TODO: add nodo of CfdiRelacionados
 
   private emisor?: EmisorValueObject;
 
