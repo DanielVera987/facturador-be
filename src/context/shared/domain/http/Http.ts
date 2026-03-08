@@ -9,7 +9,7 @@ export interface HttpOptions {
 
 export interface Http {
   get(url: string, options?: HttpOptions): Promise<any>;
-  post(url: string, data: any, options?: HttpOptions): Promise<any>;
+  post(url: string, body: any, options?: HttpOptions): Promise<any>;
   put(url: string, data: any, options?: HttpOptions): Promise<any>;
   delete(url: string, options?: HttpOptions): Promise<any>;
 }

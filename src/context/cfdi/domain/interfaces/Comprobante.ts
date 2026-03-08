@@ -17,7 +17,7 @@ import type { IReceptor } from './Receptor';
  * Atributos marcados como "Requerido", "Opcional" o "Condicional"
  * según la especificación del SAT.
  */
-export default interface IComprobante {
+export default interface Comprobante {
   /**
    * Opcional. Serie para control interno del contribuyente.
    * Longitud máxima: 25 caracteres. Patrón: [^|]{1,25}

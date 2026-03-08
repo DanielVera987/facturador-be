@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CfdiModule } from './context/cfdi/infrastructure/cfdi.module';
 import { ConfigModule } from '@nestjs/config';
+import { CfdiModule } from './services/cfdi/cfdi.module';
 
 @Module({
   imports: [
