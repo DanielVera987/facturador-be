@@ -1,5 +1,6 @@
 import type { Http } from '../../../shared/domain/http/Http';
 import { Inject } from '../../../shared/infrastructure/DI';
+import Types from '../../../shared/Types';
 import Comprobante from '../../domain/interfaces/Comprobante';
 import { PacProvider, Stamp } from '../../domain/ports/PacProvider';
 
@@ -9,7 +10,7 @@ class StampProvider implements Stamp {
 
   private readonly mode: 'JSON' | 'XML' = 'JSON';
 
-  constructor(@Inject('http') private readonly http: Http) {}
+  constructor(@Inject(Types.Http) private readonly http: Http) {}
 
   run(config: PacProvider, data: Comprobante): Promise<any> {
     const body = this.mapBody(config, data);

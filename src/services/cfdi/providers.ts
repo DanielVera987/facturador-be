@@ -3,6 +3,7 @@ import PacProvider from '../../context/cfdi/infrastructure/MultifacturasProvider
 import StampProvider from '../../context/cfdi/infrastructure/MultifacturasProvider/StampProvider';
 import AxiosHttp from '../../context/shared/infrastructure/http/AxiosHttp';
 import Types from '../../context/cfdi/Types';
+import TypesShared from '../../context/shared/Types';
 
 const providers = [
   {
@@ -18,7 +19,7 @@ const providers = [
     useClass: StampProvider
   },
   {
-    provide: 'http',
+    provide: TypesShared.Http,
     useClass: AxiosHttp
   }
 ];

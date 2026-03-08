@@ -9,6 +9,7 @@ import type {
   Credentials,
 } from '../../domain/ports/PacProvider';
 import Types from '../../Types';
+import Index from '../../../index';
 
 @Injectable()
 class StampInvoiceCommand implements Command<Comprobante, object> {
@@ -18,7 +19,6 @@ class StampInvoiceCommand implements Command<Comprobante, object> {
   ) {}
 
   run(cfdi: Comprobante): object {
-    return { message: 'Test' };
     const comprobante = ComprobanteAggregate.create(cfdi);
 
     this.configPacProvider({} as Csd, {} as Credentials);
