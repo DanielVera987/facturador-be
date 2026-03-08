@@ -11,7 +11,8 @@ export default class NoCertificadoValueObject extends ValueObject<string> {
 
   constructor(value: string) {
     super(value);
-    this.ensureIsValidNoCertificado(value);
+    // TODO: Validate generate
+    // this.ensureIsValidNoCertificado(value);
   }
 
   private ensureIsValidNoCertificado(value: string): void {

@@ -19,16 +19,21 @@ class StampInvoiceCommand implements Command<Comprobante, object> {
   ) {}
 
   run(cfdi: Comprobante): object {
-    const comprobante = ComprobanteAggregate.create(cfdi);
+    try {
+      const comprobante = ComprobanteAggregate.create(cfdi);
+      return comprobante.toPrimitives();
+    } catch (error) {
+      throw new Error(error.message);
+    }
 
-    this.configPacProvider({} as Csd, {} as Credentials);
+    /*this.configPacProvider({} as Csd, {} as Credentials);
 
     this.stampProvider.run(
       {} as PacProvider,
       comprobante.toPrimitives() as Comprobante,
     );
 
-    return comprobante.toPrimitives();
+    return comprobante.toPrimitives();*/
   }
 
   private configPacProvider(csd: Csd, credentials: Credentials) {

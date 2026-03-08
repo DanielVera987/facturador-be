@@ -13,11 +13,13 @@ export default class TipoCambioValueObject extends ValueObject<number> {
   }
 
   private ensureIsValidTipoCambio(value: number): void {
+    value = Number(value);
+
     if (typeof value !== 'number' || isNaN(value)) {
       throw new Error('TipoCambio debe ser un número válido');
     }
 
-    if (value <= 0) {
+    if (value < 0) {
       throw new Error('TipoCambio debe ser mayor a 0');
     }
   }

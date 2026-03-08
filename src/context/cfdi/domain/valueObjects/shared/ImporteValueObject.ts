@@ -13,6 +13,8 @@ export default class ImporteValueObject extends ValueObject<number> {
   }
 
   private ensureIsValidImporte(value: number): void {
+    value = Number(value);
+
     if (typeof value !== 'number' || isNaN(value)) {
       throw new Error('Importe debe ser un número válido');
     }

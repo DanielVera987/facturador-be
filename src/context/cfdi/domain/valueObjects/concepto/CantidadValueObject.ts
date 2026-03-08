@@ -14,6 +14,8 @@ export default class CantidadValueObject extends ValueObject<number> {
   }
 
   private ensureIsValid(value: number): void {
+    value = Number(value);
+
     if (typeof value !== 'number' || isNaN(value)) {
       throw new Error('Cantidad debe ser un número válido');
     }

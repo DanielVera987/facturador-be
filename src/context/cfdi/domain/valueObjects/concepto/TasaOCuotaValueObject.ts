@@ -15,7 +15,9 @@ export default class TasaOCuotaValueObject extends ValueObject<number> {
   }
 
   private ensureIsValid(value: number): void {
-    if (typeof value !== 'number' || isNaN(value)) {
+    value = Number.parseFloat(value.toString());
+
+    if (typeof value !== 'number' || Number.isNaN(value)) {
       throw new Error('TasaOCuota debe ser un número válido');
     }
 
