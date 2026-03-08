@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CfdiModule } from './context/cfdi/infrastructure/cfdi.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -10,9 +8,7 @@ import { CfdiModule } from './context/cfdi/infrastructure/cfdi.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    CfdiModule,
+    CfdiModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
