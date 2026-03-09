@@ -1,5 +1,5 @@
 import type { Http } from '../../../shared/domain/http/Http';
-import { Inject } from '../../../shared/infrastructure/DI';
+import { Inject } from '../../../shared/infrastructure/di';
 import Types from '../../../shared/Types';
 import Comprobante from '../../domain/interfaces/Comprobante';
 import { PacProvider, Stamp } from '../../domain/ports/PacProvider';
@@ -21,6 +21,7 @@ class StampProvider implements Stamp {
     });
   }
 
+  // TODO: Create a class for mapping
   private mapBody(config: PacProvider, data: Comprobante): unknown {
     return {
       version_cfdi: '4.0',

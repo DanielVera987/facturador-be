@@ -1,5 +1,5 @@
 import { Body, Controller, Post, HttpStatus, HttpException } from '@nestjs/common';
-import { Inject } from '../../../../shared/infrastructure/DI';
+import { Inject } from '../../../../shared/infrastructure/di';
 import type { Command } from '../../../../shared/application/Command';
 import type Comprobante from '../../../domain/interfaces/Comprobante';
 import Types from '../../../Types';
@@ -15,13 +15,19 @@ export class StampCfdiController {
     try {
       return await this.stampInvoice.run(body);
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: error?.message ?? '',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      const message = error instanceof Error ? error.message : String(error ?? '');
+
+      if (error instanceof Error) {
+        throw new HttpException(
+          {
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: message,
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+
+      throw new Error(message);
     }
   }
 }

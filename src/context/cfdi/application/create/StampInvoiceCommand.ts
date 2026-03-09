@@ -1,7 +1,7 @@
 import { Command } from '../../../shared/application/Command';
 import Comprobante from '../../domain/interfaces/Comprobante';
 import { default as ComprobanteAggregate } from '../../domain/agreggate/Comprobante';
-import { Inject, Injectable } from '../../../shared/infrastructure/DI';
+import { Inject, Injectable } from '../../../shared/infrastructure/di';
 import type {
   PacProvider,
   Stamp,
@@ -9,7 +9,6 @@ import type {
   Credentials,
 } from '../../domain/ports/PacProvider';
 import Types from '../../Types';
-import Index from '../../../index';
 
 @Injectable()
 class StampInvoiceCommand implements Command<Comprobante, object> {
@@ -23,7 +22,9 @@ class StampInvoiceCommand implements Command<Comprobante, object> {
       const comprobante = ComprobanteAggregate.create(cfdi);
       return comprobante.toPrimitives();
     } catch (error) {
-      throw new Error(error.message);
+      const message = error instanceof Error ? error.message : String(error ?? '');
+
+      throw new Error(message);
     }
 
     /*this.configPacProvider({} as Csd, {} as Credentials);
